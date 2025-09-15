@@ -19,14 +19,16 @@ public class Usuario {
     private String tipo_perfil;
     private String telefone;
     private String endereco;
+    private String password;
 
-    public Usuario(Long id, String nome, String email, String tipo_perfil, String telefone, String endereco) {
+    public Usuario(Long id, String nome, String email, String tipo_perfil, String telefone, String endereco, String password) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.tipo_perfil = tipo_perfil;
         this.telefone = telefone;
         this.endereco = endereco;
+        this.password = password;
     }
 
     public Usuario() {
@@ -78,6 +80,14 @@ public class Usuario {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
     }
 
 }
