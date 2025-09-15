@@ -15,7 +15,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping(value = "/somarapiv1", consumes = "application/json")
+@RequestMapping(value = "/somar/api/v1", consumes = "application/json")
 public class UsuarioController {
     private UsuarioService usuarioService;
 

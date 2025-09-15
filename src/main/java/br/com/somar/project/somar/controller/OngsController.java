@@ -15,7 +15,7 @@ import br.com.somar.project.somar.services.OngsService;
 
 
 @RestController
-@RequestMapping(value = "/somarapiv1", consumes = "application/json")
+@RequestMapping(value = "/somar/api/v1", consumes = "application/json")
 public class OngsController {
     private OngsService ongsService;
 
