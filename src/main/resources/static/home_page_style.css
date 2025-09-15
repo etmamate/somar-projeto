@@ -1,0 +1,8 @@
+.container__sessao_login__input-login{
+    border-radius: 16px;
+    display: flex;
+    flex-direction:column;
+    margin: 0;
+    justify-content: flex-start;
+    gap: 15px;
+}
