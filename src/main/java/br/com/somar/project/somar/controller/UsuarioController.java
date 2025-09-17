@@ -13,7 +13,6 @@ import br.com.somar.project.somar.services.UsuarioService;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping(value = "/somar/api/v1", consumes = "application/json")
 public class UsuarioController {
@@ -27,12 +26,14 @@ public class UsuarioController {
     @GetMapping(value = "/listar-usuarios")
     public List<Usuario> listarUsuarios() {
         return usuarioService.listarUsuario();
+        // .stream().map(UsuarioResponseDTO::new);
     }
 
     // GETBYID
     @GetMapping("/buscar-usuario-id={id}")
     public Optional<Usuario> getUsuarioById(@PathVariable Long id) {
         return usuarioService.listarUsuarioById(id);
+        // .stream().map(UsuarioResponseDTO::new);
     }
 
     // POST
