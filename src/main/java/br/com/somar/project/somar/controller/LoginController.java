@@ -31,6 +31,7 @@ public class LoginController {
                 .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
         if (passwordEncoder.matches( body.senha(), usuario.getSenha())) {
             String token = this.tokenService.generateToken(usuario);
+            System.out.println("Foi!");
             return ResponseEntity.ok(new ResponseDTO(usuario.getNome(), token));
         }
         return ResponseEntity.badRequest().build();
