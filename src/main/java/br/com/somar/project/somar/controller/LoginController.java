@@ -18,25 +18,25 @@ import br.com.somar.project.somar.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(value = "/auth")
 @RequiredArgsConstructor
 public class LoginController {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginRequestDTO body) {
         Usuario usuario = this.usuarioRepository.findByEmail(body.email())
                 .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
-        if (passwordEncoder.matches(usuario.getSenha(), body.senha())) {
+        if (passwordEncoder.matches( body.senha(), usuario.getSenha())) {
             String token = this.tokenService.generateToken(usuario);
             return ResponseEntity.ok(new ResponseDTO(usuario.getNome(), token));
         }
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register")
     public ResponseEntity register(@RequestBody RegisterRequestDTO body) {
         Optional<Usuario> usuario = this.usuarioRepository.findByEmail(body.email());
 
