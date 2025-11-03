@@ -78,6 +78,11 @@
 		    <artifactId>java-jwt</artifactId>
 		    <version>4.5.0</version>
 		</dependency>
+	<!-- ... other dependency elements ... -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -98,6 +103,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<wait>10000</wait> <!-- tempo em milissegundos para aguardar entre cada verificação -->
+                	<maxAttempts>30</maxAttempts> <!-- número de tentativas (total de wait * maxAttempts = tempo total) -->
+					<jmxPort>3031</jmxPort>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
