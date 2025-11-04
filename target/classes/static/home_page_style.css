@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: rgb(5, 31, 59);
+    color: white;
+}
+
+.main__bloco-login__titulo{
+    font-family: "Montserrat", sans-serif;
+}
+.main__bloco-login__inputs{
+    display:grid;
+    flex-direction:column;
+    justify-content: flex-start;
+    gap: 15px;
+    margin: 0px;
+    width: 175px;
+}
+
+.main__bloco-login__login{
+    font-family: "Montserrat", sans-serif;
+
+}
+.main__bloco-login__password{
+
+    font-family: "Montserrat", sans-serif;
+}
+
+.input_password{
+    border-color: rgb(0, 162, 255);
+    border-radius: 8px;
+    height: 20px;
+}
+
+.input_login{
+    border-color: rgb(0, 162, 255);
+    border-radius: 8px;
+    height: 20px;
+}
