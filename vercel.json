@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "target/seu-app.jar",
+      "src": "target/somar-0.0.1-SNAPSHOT.jar",
       "use": "@vercel/java"
     }
   ],
