@@ -1,0 +1,12 @@
+{
+  "name": "somar-projeto",
+  "version": "1.0.0",
+  "description": "Spring Boot API",
+  "scripts": {
+    "build": "mvn clean package -DskipTests",
+    "vercel-build": "mvn clean package -DskipTests"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,22 +1,35 @@
+package api;
+
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 
 public class Index {
-  public static void main(String[] args) {
-    // Este arquivo é apenas um proxy para o Spring Boot
-    // Sua aplicação real está em SomarApplication.java
-    Vertx.vertx().deployVerticle(new io.vertx.core.AbstractVerticle() {
-      @Override
-      public void start() {
-        // O Vercel requer este arquivo, mas a lógica principal está no JAR
+    public static void main(String[] args) {
+        Vertx vertx = Vertx.vertx();
+        Router router = Router.router(vertx);
+        
+        router.route().handler(BodyHandler.create());
+        
+        // Rota de health check
+        router.get("/").handler(routingContext -> {
+            HttpServerResponse response = routingContext.response();
+            response
+                .putHeader("content-type", "text/plain")
+                .end("Somar API - Spring Boot no Vercel");
+        });
+        
+        router.get("/health").handler(routingContext -> {
+            HttpServerResponse response = routingContext.response();
+            response
+                .putHeader("content-type", "application/json")
+                .end("{\"status\":\"OK\",\"service\":\"somar-api\"}");
+        });
+        
+        // Inicia o servidor
         vertx.createHttpServer()
-          .requestHandler(req -> {
-            // Redireciona para o Spring Boot
-            req.response()
-              .putHeader("content-type", "text/plain")
-              .end("Carregando aplicação Spring Boot...");
-          })
-          .listen(Integer.parseInt(System.getenv("PORT")));
-      }
-    });
-  }
+            .requestHandler(router)
+            .listen(Integer.parseInt(System.getenv("PORT")), "0.0.0.0");
+    }
 }
