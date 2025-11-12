@@ -46,6 +46,7 @@ public class LoginController {
             newUsuario.setSenha(passwordEncoder.encode(body.senha()));
             newUsuario.setEmail(body.email());
             newUsuario.setNome(body.nome());
+            newUsuario.setTipo(body.tipo());
             this.usuarioRepository.save(newUsuario);
 
             String token = this.tokenService.generateToken(newUsuario);
