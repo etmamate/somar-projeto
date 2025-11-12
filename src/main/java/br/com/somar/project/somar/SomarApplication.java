@@ -17,7 +17,7 @@ public class SomarApplication {
 		SpringApplication.run(SomarApplication.class, args);
 	}
 
- 		@PostConstruct
+ 	@PostConstruct
 	public void init() {
 		try {
 			// Aguarda 30 segundos antes de inicializar conexões
@@ -27,8 +27,8 @@ public class SomarApplication {
 		}
 	}
 
-	@Bean
-    public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer() {
-        return factory -> factory.setPort(Integer.parseInt(System.getenv().getOrDefault("PORT", "8080")));
-    }
+	// @Bean
+    // public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer() {
+    //     return factory -> factory.setPort(Integer.parseInt(System.getenv().getOrDefault("PORT", "8080")));
+    // }
 }
