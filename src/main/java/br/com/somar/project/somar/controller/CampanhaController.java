@@ -1,5 +1,6 @@
 package br.com.somar.project.somar.controller;
 
+import org.hibernate.sql.ast.tree.cte.CteMaterialization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import br.com.somar.project.somar.dto.CampanhaRequestDTO;
 import br.com.somar.project.somar.dto.CampanhaResponseDTO;
 import br.com.somar.project.somar.model.Campanha;
 import br.com.somar.project.somar.repository.CampanhaRepository;
+import br.com.somar.project.somar.services.CampanhaService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -17,8 +19,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CampanhaController {
     private final CampanhaRepository campanhaRepository;
+    private final CampanhaService campanhaService;
 
-    @PostMapping(value = "/cadastrar")
+    @PostMapping(value = "/cadastrarCampanha")
     public ResponseEntity cadastrar(@RequestBody CampanhaRequestDTO body){
         
         Campanha newCampanha = new Campanha();
@@ -30,5 +33,12 @@ public class CampanhaController {
         this.campanhaRepository.save(newCampanha);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/cadastrar")
+    public Campanha cadastrarCampanha(Campanha campanha){
+
+        System.out.println(campanha.getTitulo() + campanha.getDescricao() + campanha.getLocalizacao() + campanha.getMeta());
+        return campanhaService.salvarCampanha(campanha);
     }
 }
