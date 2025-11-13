@@ -21,7 +21,7 @@ public class CampanhaController {
     private final CampanhaRepository campanhaRepository;
     private final CampanhaService campanhaService;
 
-    @PostMapping(value = "/cadastrarCampanha")
+    @PostMapping(value = "/cadastrar")
     public ResponseEntity cadastrar(@RequestBody CampanhaRequestDTO body){
         
         Campanha newCampanha = new Campanha();
@@ -32,10 +32,10 @@ public class CampanhaController {
 
         this.campanhaRepository.save(newCampanha);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(newCampanha.getTitulo());
     }
 
-    @PostMapping(value = "/cadastrar")
+    @PostMapping(value = "/teste")
     public Campanha cadastrarCampanha(Campanha campanha){
 
         System.out.println(campanha.getTitulo() + campanha.getDescricao() + campanha.getLocalizacao() + campanha.getMeta());
