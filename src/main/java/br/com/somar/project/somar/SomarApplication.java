@@ -21,10 +21,14 @@ public class SomarApplication {
 	public void init() {
 		try {
 			// Aguarda 30 segundos antes de inicializar conexões
-			TimeUnit.SECONDS.sleep(30);
+				
+			TimeUnit.SECONDS.sleep(15);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
+		System.out.println("====================================");
+		System.out.println("==============INICIADO==============");
+		System.out.println("====================================");
 	}
 
 	// @Bean

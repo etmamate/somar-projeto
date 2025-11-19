@@ -32,8 +32,8 @@ public class LoginController {
         if (passwordEncoder.matches( body.senha(), usuario.getSenha())) {
             String token = this.tokenService.generateToken(usuario);
             System.out.println("Foi!");
-            return ResponseEntity.ok(new ResponseDTO(usuario.getNome(), token));
-        }
+            return ResponseEntity.ok(new ResponseDTO(usuario.getNome(), usuario.getTipo()));
+        } 
         return ResponseEntity.badRequest().build();
     }
 
@@ -50,7 +50,7 @@ public class LoginController {
             this.usuarioRepository.save(newUsuario);
 
             String token = this.tokenService.generateToken(newUsuario);
-            return ResponseEntity.ok(new ResponseDTO(newUsuario.getNome(), token));
+            return ResponseEntity.ok(new ResponseDTO(newUsuario.getNome(), newUsuario.getTipo()));
 
         }
 
