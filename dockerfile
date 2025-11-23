@@ -1,25 +1,17 @@
-# Dockerfile
 FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
+COPY . .
 
-# Copiar arquivos do Maven Wrapper
-COPY .mvn/ .mvn
-COPY mvnw .
-COPY pom.xml .
-
-# Dar permissão ao mvnw e instalar dependências
 RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
-
-# Copiar código fonte
-COPY src ./src
-
-# Construir a aplicação
 RUN ./mvnw clean package -DskipTests
 
-# Expor porta
+# Verificar se o JAR foi criado
+RUN echo "=== Conteúdo da pasta target ==="
+RUN ls -la target/
+RUN echo "=== Nome do JAR ==="
+RUN find target/ -name "*.jar"
+
 EXPOSE 8080
 
-# Comando de execução
-ENTRYPOINT ["java", "-jar", "target/somar-back-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/somar-back-0.0.1-SNAPSHOT.jar"]

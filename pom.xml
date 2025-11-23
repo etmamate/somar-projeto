@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.somar.project</groupId>
-	<artifactId>somar</artifactId>
+	<artifactId>somar-back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>somar</name>
 	<description>Demo project for Spring Boot</description>
