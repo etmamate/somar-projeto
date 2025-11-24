@@ -1,7 +1,12 @@
 package br.com.somar.project.somar.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.hibernate.sql.ast.tree.cte.CteMaterialization;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +40,15 @@ public class CampanhaController {
         return ResponseEntity.ok(newCampanha.getTitulo());
     }
 
-    @PostMapping(value = "/teste")
-    public Campanha cadastrarCampanha(Campanha campanha){
+    @GetMapping(value = "/listar")
+    public List<Campanha> listarCampanha(Campanha campanha){
 
-        System.out.println(campanha.getTitulo() + campanha.getDescricao() + campanha.getLocalizacao() + campanha.getMeta());
-        return campanhaService.salvarCampanha(campanha);
+        return campanhaService.listarCampanhas();
+    }
+
+    @GetMapping(value = "/listar/{id}")
+    public Optional<Campanha> listarCampanhaById(@PathVariable Long id){
+        System.out.println("Id procurado:" + id);
+        return campanhaService.listarCampanhaById(id);
     }
 }
