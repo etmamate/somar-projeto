@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/campanha/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/campanha/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/campanha/listar/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/campanha/listar/ong/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

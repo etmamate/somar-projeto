@@ -16,7 +16,7 @@ public interface CampanhaRepository extends JpaRepository<Campanha, Long> {
     Optional<Campanha> findById(Long id);
 
     @Query(value = "SELECT c.id, c.titulo, c.descricao, c.meta, c.localizacao, c.category, c.ong_id FROM campanhas c WHERE c.ong_id = :ongId", nativeQuery = true)
-    Optional<Campanha> findCampanhasByOngId(@Param("ongId") Long ongId);
+    List<Campanha> findCampanhasByOngId(@Param("ongId") Long ong_Id);
 
     // ✅ Buscar campanhas por ID do usuário (ong_id)
     // @Query("SELECT c FROM Campanha c WHERE c.ong.id = :ongId")
