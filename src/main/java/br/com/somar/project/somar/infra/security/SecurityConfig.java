@@ -1,6 +1,7 @@
 package br.com.somar.project.somar.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,6 +37,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/home").permitAll()
                         .requestMatchers(HttpMethod.POST, "/campanha/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/campanha/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/campanha/listar/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

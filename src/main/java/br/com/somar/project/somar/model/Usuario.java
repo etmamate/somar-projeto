@@ -1,12 +1,20 @@
 package br.com.somar.project.somar.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.query.sqm.CastType;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +44,8 @@ public class Usuario {
     private String email;
     private String senha;
     private String tipo;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Campanha> campanhas = new ArrayList<>();
 
 }

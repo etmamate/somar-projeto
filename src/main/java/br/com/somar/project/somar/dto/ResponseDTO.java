@@ -1,5 +1,5 @@
 package br.com.somar.project.somar.dto;
 
-public record ResponseDTO(String name, String tipo) {
+public record ResponseDTO(Long id, String name, String tipo) {
     
 }
