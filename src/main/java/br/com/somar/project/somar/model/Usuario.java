@@ -45,7 +45,7 @@ public class Usuario {
     private String senha;
     private String tipo;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Campanha> campanhas = new ArrayList<>();
+    // @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // private List<Campanha> campanhas = new ArrayList<>();
 
 }

@@ -5,5 +5,6 @@ public record CampanhaRequestDTO(
     String descricao, 
     int meta, 
     String localizacao, 
+    Long ongId,
     String category) {
 };

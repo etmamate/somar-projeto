@@ -30,9 +30,8 @@ public class Campanha {
     private int meta;
     private String localizacao;
     
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ong_id", nullable = false)
-    private Usuario usuario;
+    private Long ongId;
     
     private String category;
 }

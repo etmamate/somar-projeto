@@ -1,6 +1,6 @@
 package br.com.somar.project.somar.controller;
 
-import java.lang.foreign.Linker.Option;
+// import java.lang.foreign.Linker.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +23,7 @@ import br.com.somar.project.somar.dto.CampanhaResponseDTO.CampanhasListagemDTO;
 import br.com.somar.project.somar.model.Campanha;
 import br.com.somar.project.somar.model.Usuario;
 import br.com.somar.project.somar.repository.CampanhaRepository;
+import br.com.somar.project.somar.repository.CampanhaRepository.CampanhaOngProjection;
 import br.com.somar.project.somar.services.AuthenticationService;
 import br.com.somar.project.somar.services.CampanhaService;
 import io.micrometer.core.ipc.http.HttpSender.Response;
@@ -54,33 +55,18 @@ public class CampanhaController {
     @PostMapping("/cadastrar")
     public ResponseEntity<Object> cadastrar(@RequestBody CampanhaRequestDTO body, HttpServletRequest request) {
         try {
-            Usuario usuarioLogado = authenticationService.getUsuarioFromToken(request);
-
-            if (usuarioLogado.getTipo().equals("doador")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Apenas Ongs podem criar campanhas");
-            }
 
             Campanha newCampanha = new Campanha();
             newCampanha.setTitulo(body.titulo());
             newCampanha.setDescricao(body.descricao());
             newCampanha.setMeta(body.meta());
             newCampanha.setLocalizacao(body.localizacao());
-            newCampanha.setUsuario(usuarioLogado);
+            newCampanha.setOngId(body.ongId());
             newCampanha.setCategory(body.category());
 
             this.campanhaRepository.save(newCampanha);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new CampanhaResponseDTO(
-                            newCampanha.getId(),
-                            newCampanha.getTitulo(),
-                            newCampanha.getDescricao(),
-                            newCampanha.getMeta(),
-                            newCampanha.getLocalizacao(),
-                            usuarioLogado.getId(),
-                            usuarioLogado.getNome(),
-                            newCampanha.getCategory()));
-
+            return ResponseEntity.status(HttpStatus.CREATED).body("Campanha criada com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao criar campanha: " + e.getMessage());
         }
@@ -107,85 +93,34 @@ public class CampanhaController {
     // }
 
     @GetMapping(value = "/listar")
-    public List<CampanhaComOngDTO> listarCampanha() {
-        return campanhaRepository.findAll().stream()
-                .map(campanha -> new CampanhaComOngDTO(
-                        campanha.getId(),
-                        campanha.getTitulo(),
-                        campanha.getDescricao(),
-                        campanha.getMeta(),
-                        campanha.getLocalizacao(),
-                        campanha.getUsuario().getId(),
-                        campanha.getUsuario().getNome(), // Nome da ONG
-                        campanha.getCategory(),
-                        campanha.getUsuario().getEmail() // Email da ONG
-                ))
-                .collect(Collectors.toList());
+    public ResponseEntity<?> listarCampanha() {
+
+       List<CampanhaOngProjection> campanhas = campanhaRepository.findAllCampanhasComOng().stream().collect(Collectors.toList());
+    
+    if (campanhas.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Nenhuma campanha encontrada");
+    }
+    
+    List<CampanhaResponseDTO.CampanhasListagemDTO> campanhasDTO = campanhas.stream()
+            .map(campanha -> new CampanhaResponseDTO.CampanhasListagemDTO(
+                    campanha.getId(),
+                    campanha.getTitulo(),
+                    campanha.getDescricao(),
+                    campanha.getMeta(),
+                    campanha.getLocalizacao(),
+                    campanha.getOngId(),
+                    campanha.getOngNome(), // Buscar nome da ONG
+                    campanha.getCategory() // Buscar email da ONG
+            ))
+            .collect(Collectors.toList());
+    
+    return ResponseEntity.ok(campanhasDTO);
+
     }
 
-    @GetMapping(value = "/listar/{id}")
-    public ResponseEntity<?> listarMinhasCampanhas(@PathVariable Long id, HttpServletRequest request) {
-        try {
-            // Usuario usuarioLogado = authenticationService.getUsuarioFromToken(request);
-            System.out.println("Buscando pelo id: " + id);
-            Optional<Campanha> campanhaOptional = campanhaRepository.findById(id);
-
-            if (campanhaOptional.isPresent()) {
-                Campanha campanhas = campanhaOptional.get();
-                System.out.println("Campanha Encontrada: " + campanhas.getTitulo());
-
-                CampanhaResponseDTO.CampanhasListagemDTO response = new CampanhaResponseDTO.CampanhasListagemDTO(
-                        campanhas.getId(),
-                        campanhas.getTitulo(),
-                        campanhas.getDescricao(),
-                        campanhas.getMeta(),
-                        campanhas.getLocalizacao(),
-                        campanhas.getCategory(),
-                        campanhas.getUsuario().getId());
-
-                return ResponseEntity.ok(response);
-            } else {
-                System.out.println("❌ Campanha não encontrada para ID: " + id);
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Campanha não encontrada");
-            }
-
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar campanhas: " + e.getMessage());
-            return ResponseEntity.badRequest().body("Erro ao buscar campanha: " + e.getMessage());
-        }
-    }
-
-    @GetMapping(value = "/listar/ong/{ong_id}")
-    public ResponseEntity<?> listarCampanhasPorOng(@PathVariable Long ong_id) {
-        try {
-            System.out.println("🔍 Buscando campanhas da ONG ID: " + ong_id);
-
-            List<Campanha> campanhas = campanhaRepository.findCampanhasByOngId(ong_id);
-            System.out.println("📊 Campanhas encontradas! ".length());
-
-            if (campanhas.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Nenhuma campanha encontrada para esta ONG");
-            }
-
-            List<CampanhaResponseDTO.CampanhasListagemDTO> response = campanhas.stream()
-                    .map(campanha -> new CampanhaResponseDTO.CampanhasListagemDTO(
-                            campanha.getId(),
-                            campanha.getTitulo(),
-                            campanha.getDescricao(),
-                            campanha.getMeta(),
-                            campanha.getLocalizacao(),
-                            campanha.getCategory(),
-                            campanha.getUsuario().getId()))
-                    .collect(Collectors.toList());
-
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            System.out.println("💥 Erro ao buscar campanhas da ONG: " + e.getMessage());
-            return ResponseEntity.badRequest()
-                    .body("Erro ao buscar campanhas: " + e.getMessage());
-        }
-    }
+    // @GetMapping(value = "/listar/ong/{ong_id}")
+    // public ResponseEntity<?> listarCampanhasPorOng(@PathVariable Long ong_id) {
+        
+    // }
 }

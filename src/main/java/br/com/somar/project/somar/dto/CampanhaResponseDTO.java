@@ -8,7 +8,8 @@ public record CampanhaResponseDTO(
         String localizacao,
         Long OngId,
         String ongNome,
-        String category) {
+        String category,
+        String ongEmail) {
 
     public record CampanhaComOngDTO(
             Long id,
@@ -28,8 +29,10 @@ public record CampanhaResponseDTO(
             String descricao,
             int meta,
             String localizacao,
-            String category,
-            Long ongId) {
+            Long ongId,
+            String ongNome,
+            String category
+        ) {
 
     }
 
