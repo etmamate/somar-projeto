@@ -18,8 +18,8 @@ public interface CampanhaRepository extends JpaRepository<Campanha, Long> {
     // 🔍 Buscar campanhas por usuário (ONG)
     Optional<Campanha> findById(Long id);
 
-    @Query(value = "SELECT c.id, c.titulo, c.descricao, c.meta, c.localizacao, c.category, c.ong_id FROM campanhas c WHERE c.ong_id = :ongId", nativeQuery = true)
-    List<Campanha> findCampanhasByOngId(@Param("ongId") Long ong_Id);
+    @Query(value = "SELECT c.id, c.titulo, c.descricao, c.meta, c.localizacao, c.category, c.ong_id, u.nome AS ongNome FROM campanhas c JOIN usuarios u ON u.id = c.ong_id WHERE c.ong_id = :ongId", nativeQuery = true)
+    List<CampanhaOngProjection> findCampanhasByOngId(@Param("ongId") Long ong_Id);
 
     @Query(value = """
             SELECT c.id, c.titulo, c.descricao, c.meta, c.localizacao, c.ong_id,u.nome as ongNome,c.category, u.email FROM campanhas c JOIN usuarios u ON u.id = c.ong_id""", nativeQuery = true)

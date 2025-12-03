@@ -119,8 +119,25 @@ public class CampanhaController {
 
     }
 
-    // @GetMapping(value = "/listar/ong/{ong_id}")
-    // public ResponseEntity<?> listarCampanhasPorOng(@PathVariable Long ong_id) {
+    @GetMapping(value = "/listar/ong/{ong_id}")
+    public ResponseEntity<?> listarCampanhasPorOng(@PathVariable Long ong_id) {
         
-    // }
+        List<CampanhaOngProjection> campanhas = campanhaRepository.findCampanhasByOngId(ong_id).stream().collect(Collectors.toList());
+        
+        List<CampanhaResponseDTO.CampanhasListagemDTO> campanhasDTO = campanhas.stream()
+            .map(campanha -> new CampanhaResponseDTO.CampanhasListagemDTO(
+                    campanha.getId(),
+                    campanha.getTitulo(),
+                    campanha.getDescricao(),
+                    campanha.getMeta(),
+                    campanha.getLocalizacao(),
+                    campanha.getOngId(),
+                    campanha.getOngNome(), // Buscar nome da ONG
+                    campanha.getCategory() // Buscar email da ONG
+            ))
+            .collect(Collectors.toList());
+            
+        return ResponseEntity.ok(campanhasDTO);
+        
+    }
 }
